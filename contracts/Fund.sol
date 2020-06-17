@@ -159,6 +159,17 @@ contract Fund is User{
         );
 
     }*/
+    // 2020/06/18 prevent same project name
+    function check_title (string memory _title) public view returns(bool){
+    	uint i;
+    	uint l = index_to_project.length;
+     	for(i = 0 ; i<l; i++){
+     		if(keccak256(abi.encodePacked(index_to_project[i])) == keccak256(abi.encodePacked(_title))) {
+     			return true;
+     		}
+     	}
+        return false;
+    }
     /*
     function view_topic (string memory _title) public view returns(string memory){
         return title_to_project[_title].topic;

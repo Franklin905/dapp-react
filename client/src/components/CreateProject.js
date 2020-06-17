@@ -4,24 +4,41 @@ class CreateProject extends Component {
 	//state = {title: '', intro: '', topic: '', tar_money: "1", deadline: '', submit: false, hasCreate: false}
 	constructor(props) {
 		super(props);
-		this.state = {title: '', topic: '', intro: '', tar_money: "1", deadline: '', submit: false, hasCreate: false}
+		this.state = {title: '', topic: '', intro: '', tar_money: "1", deadline: '', submit: false, hasCreate: false, 'title_exist': false}
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);		// 2020/06/18
 		this.handleTopic = this.handleTopic.bind(this);
 	}
 
-	handleSubmit() {
-		this.setState({submit: true})
-	}
-
 	handleChange(event) {
-		const {name, value} = event.target
-		this.setState({[name]: value})
+		const {name, value} = event.target;
+		this.setState({[name]: value});
 	}
 
 	handleTopic(event) {
 		this.setState({topic: event.target.value});
+	}
+
+	// 2020/06/18
+	handleSubmit() {
+		/*await this.check_title();
+		if(this.state.title_exist) {
+			console.log(this.state.title_exist);
+			console.log('title already exists!');
+		}
+		else{
+			console.log(this.state.title_exist);
+			console.log('title pass');
+			this.setState({submit: true});
+		}*/
+		this.setState({submit: true});
+	}
+
+	// 2020/06/18
+	check_title = async () => {
+		const title_check = await this.props.data.contract.methods.check_title(this.state.title).call();
+		this.setState({title_exist: title_check});
 	}
 
 	add_project = async () => {
@@ -41,17 +58,25 @@ class CreateProject extends Component {
 
 	render() {
 		if (this.state.submit) {
-			if (!this.state.hasCreate) {
-				this.add_project()
-				this.setState({hasCreate: true})
+			this.check_title();
+			if (this.state.title_exist) {
+				console.log('title already exists!');
+				this.setState({submit: false});
 			}
-			return (
-				<div>
-					<h1>Adding Transaction</h1>
-					<br></br>
-					<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
-				</div>
-			)
+			else {
+				console.log('this.state.title_exist = ' + this.state.title_exist);
+				if (!this.state.hasCreate) {
+					this.add_project();
+					this.setState({hasCreate: true});
+				}
+				return (
+					<div>
+						<h1>Adding Transaction</h1>
+						<br></br>
+						<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
+					</div>
+				)
+			}
 		}
 		return (
 			<div>
