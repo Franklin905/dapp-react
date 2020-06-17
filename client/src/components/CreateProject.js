@@ -38,7 +38,7 @@ class CreateProject extends Component {
 	// 2020/06/18
 	check_title = async () => {
 		const title_check = await this.props.data.contract.methods.check_title(this.state.title).call();
-		this.setState({title_exist: title_check});
+		await this.setState({title_exist: title_check});
 	}
 
 	add_project = async () => {
@@ -60,7 +60,7 @@ class CreateProject extends Component {
 		if (this.state.submit) {
 			this.check_title();
 			if (this.state.title_exist) {
-				console.log('title already exists!');
+				alert('title already exists!');
 				this.setState({submit: false});
 			}
 			else {
