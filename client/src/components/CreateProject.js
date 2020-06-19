@@ -39,6 +39,27 @@ class CreateProject extends Component {
 	check_title = async () => {
 		const title_check = await this.props.data.contract.methods.check_title(this.state.title).call();
 		await this.setState({title_exist: title_check});
+		console.log('title_check = ' + title_check);
+		
+		if (title_check) {
+			alert('title already exists!');
+			await this.setState({submit: false});
+		}
+		else {
+			console.log('title_check should be false, title_check = ' + title_check);
+			const hasCreate = this.state.hasCreate;
+			if (!hasCreate) {
+				await this.add_project();
+				this.setState({hasCreate: true});
+			}
+			return (
+				<div>
+					<h1>Adding Transaction</h1>
+					<br></br>
+					<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
+				</div>
+			)
+		}
 	}
 
 	add_project = async () => {
@@ -57,9 +78,10 @@ class CreateProject extends Component {
 	 }
 
 	render() {
+		console.log('this.state.submit = ' + this.state.submit);
 		if (this.state.submit) {
 			this.check_title();
-			if (this.state.title_exist) {
+			/*if (this.state.title_exist) {
 				alert('title already exists!');
 				this.setState({submit: false});
 			}
@@ -76,7 +98,7 @@ class CreateProject extends Component {
 						<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
 					</div>
 				)
-			}
+			}*/
 		}
 		return (
 			<div>
