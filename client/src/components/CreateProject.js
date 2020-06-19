@@ -38,8 +38,9 @@ class CreateProject extends Component {
 	// 2020/06/18
 	check_title = async () => {
 		const title_check = await this.props.data.contract.methods.check_title(this.state.title).call();
-		await this.setState({title_exist: title_check});
+		//await this.setState({title_exist: title_check});
 		console.log('title_check = ' + title_check);
+		console.log('title_check type = ' + typeof(title_check))
 		
 		if (title_check) {
 			alert('title already exists!');
@@ -48,10 +49,16 @@ class CreateProject extends Component {
 		else {
 			console.log('title_check should be false, title_check = ' + title_check);
 			const hasCreate = this.state.hasCreate;
-			if (!hasCreate) {
-				await this.add_project();
+			/*if (!hasCreate) {
+				try{
+					await this.add_project();
+				} catch(error) {
+					alert('Error occurs : The project name has been used.');
+				}
+				//await this.add_project();
 				this.setState({hasCreate: true});
-			}
+			}*/
+			await this.add_project();
 			return (
 				<div>
 					<h1>Adding Transaction</h1>
@@ -79,8 +86,9 @@ class CreateProject extends Component {
 
 	render() {
 		console.log('this.state.submit = ' + this.state.submit);
-		if (this.state.submit) {
-			this.check_title();
+		let submit = this.state.submit;
+		if (submit) {
+			return(this.check_title())
 			/*if (this.state.title_exist) {
 				alert('title already exists!');
 				this.setState({submit: false});
