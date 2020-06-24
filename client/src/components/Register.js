@@ -5,7 +5,8 @@ class Register extends Component {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.state = {intro: '', nickname: '', submit: false, hasRegister: false};
+		//this.state = {intro: '', nickname: '', submit: false, hasRegister: false};
+		this.state = {intro: '', nickname: '', submit: false};
 	}
 	handleChange(event) {
 		const {name, value} = event.target;
@@ -13,11 +14,11 @@ class Register extends Component {
 	}
 	handleSubmit(event) {
 		this.setState({submit: true});
-		alert('Registered!');
+		// alert('Registered!');
 	}
 	register = async () => {
 		const { accounts, contract } = this.props.data;
-		await contract.methods.add_user(this.state.nickname,this.state.intro)
+		await contract.methods.add_user(this.props.nickname,this.state.intro)
 		.send({
 			from: accounts[0] ,
 			value:0,
@@ -28,41 +29,36 @@ class Register extends Component {
 
 	render() {
 		if(this.state.submit) {
-			if(!this.state.hasRegister) {
-				this.register()
-				this.setState({hasRegister: true})
+			if(!this.props.hasRegister) {
+				this.register();
+				this.props.handleRegister()
 			}
 			return (
-				<div>
-					<h1>Register Successfully!</h1>
+				<div class="Center">
+					<h1 class="h1">Register Successfully!</h1>
 					<br></br>
-					<button className="Button" name="menu" onClick={this.props.handleCurrentPage}>Menu</button>
+					<button class="Button" className="Button" name="menu" onClick={this.props.handleCurrentPage}>Menu</button>
 				</div>
 			)
 		}
 		return(
-			<div>
-				<h1 style={{color:'whiter', textAlign:'center'}}>Welcome to DCrowdfunding</h1>
-				<form onSubmit={this.handleSubmit}>
-					<fieldset style={{background:' #eeeeee', marginTop:'20px', width:'1200px'}}>
-						<legend style={{background: 'gray', color: 'white', padding: '5px 10px'}}>Register</legend>
-						<label style={{color:'black'}}>
-							Nickname:
-							<input name="nickname" type='text' value={this.state.nickname} onChange={this.handleChange} />
-						</label>
+			<div class="Center">
+				<form onSubmit={this.handleSubmit} class="Center">
+					<fieldset class="RegisterField">
+						<legend class="RegisterLegend">Welcome to DCrowdfunding</legend>
+						<p class="BasicWord">Nickname: 
+							<input maxlength="12" name="nickname" type='text' class="NicknameInput" value={this.props.nickname} onChange={this.props.handleNickname} />
+						</p>
 
 						<textarea
 							name="intro"
 							value={this.state.intro}
 							placeholder="Introduce yourself..."
 							onChange={this.handleChange}
-							style={{width: "1200px",
-								height: "150px",
-								display: 'table-cell',
-								fontFamily: "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei",
-								fontSize: "16px"}}>
+							class="IntroductionInput">
 						</textarea>
-						<input style={{color:'blue', marginLeft:'600px', marginBottom:'10px'}} type="submit" value="Submit" />
+						<br></br>
+						<input class="Button" type="submit" value="Submit" />
 					</fieldset>
 				</form>
 			</div>

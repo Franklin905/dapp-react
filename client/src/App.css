@@ -1,63 +1,104 @@
+:root {
+  --header-primary: #1FC173;
+  --header-background-color: rgb(253, 253, 244);
+  --primary: #1FC173;
+  --background-color: #dff2f8;
+  --white: #FFFFFF;
+  --brown: rgb(236, 234, 220);
+  --dark-grey: #3b3b3b;
+  --shallow-grey: #888888;
+  --very-shallow-grey: #d6d6d6;
+  --pewter-blue: #779CAB;
+}
+
 .Background {
-  width: 212.6vh;
-  height: 100vh;
+  min-width: 212.6vh;
+  min-height: 100vh;
   margin:0px;
   padding:0px;
-  background-color: #40454e;
+  background-color: var(--background-color);
+}
+
+
+/* h */
+.h1 {
+  text-align: center;
+  font-size: 32px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 10px;
+}
+
+.h2 {
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  margin-bottom: 0px;
+  color: var(--dark-grey);
+}
+
+/* Menu */
+.MenuH1 {
+  text-align: center;
+  font-size: 28px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-bottom: 0px;
+}
+
+.MenuH2 {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  color: var(--shallow-grey);
+}
+
+.MenuH3 {
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  color: var(--shallow-grey);
+}
+
+.MenuBottom {
+  text-align: center;
+  background-color: var(--shallow-grey);
+  margin-bottom: 2px;
+}
+
+/* Header */
+
+.Header {
+  background-color: var(--header-background-color);
+  min-height: 60px;
 }
 
 .Logo {
   
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
-  font-size: 16px;
-  width: 40vh;
-  min-height: 80px;
-  border: 1px solid #40454e;
-  background-color: #40454e;
+  font-size: 12px;
+  width: 30vh;
+  min-height: 60px;
+  margin-left: 30px;
+  border: 1px solid var(--header-background-color);
+  background-color: var(--header-background-color);
   text-align: center;
-  color: hsl(330, 100%, 68%);
+  color: var(--header-primary);
+  cursor: pointer;
 }
 
-.App {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
-  color: hsl(204, 89%, 82%);
-  padding: 0px 0px 0px 30px;
-  background-color: #40454e;
-}
-
-.Project {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
-  width: 45vh;
-  min-height: 40vh;
-  color: hsl(204, 89%, 82%);
-  margin: 10px;
-  padding: 0px 0px 0px 0px;
-  border: 2px solid #ffffff0e;
-  background-color: #ffffff17;
+.HeaderLeftBlock {
   display: inline-block;
+  text-align: left;
 }
 
-.Project_List {
-  text-align: center;
-}
-
-#Progress {
-  position: relative;
-  width: 100%;
-  height: 3px;
-  background-color: #353333b0;
-  margin-bottom: 4px;
-}
-
-.Button {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 18px;
-  min-height: 3vh;
-  color: #373c44;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border: 4px solid hsl(204, 100%, 66%);
-  background-color: hsl(204, 89%, 82%);
+.HeaderRightBlock {
+  display: inline-block;
+  text-align: right;
 }
 
 .HeaderButton {
@@ -65,16 +106,451 @@
   font-size: 18px;
   min-height: 4vh;
   text-decoration: underline;
-  color: hsl(330, 100%, 68%);
+  color: var(--header-primary);
   margin: 0px 3px 0px 3px;
-  border: 4px solid #40454e;
-  background-color: #40454e;
+  border: 4px solid var(--header-background-color);
+  background-color: var(--header-background-color);
+  cursor: pointer;
+  /*border: 4px solid #40454e;
+  background-color: #40454e;*/
 }
 
-hr {
+.HelloButton {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  min-height: 4vh;
+  text-decoration: underline;
+  color: var(--header-primary);
+  border: 4px solid var(--header-background-color);
+  background-color: var(--header-background-color);
+  cursor: pointer;
+  text-align: right;
+}
+
+.HeaderRight {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  min-height: 4vh;
+  margin-left: 790px;
+  margin-right: 20px;
+  color: var(--header-primary);
+  text-align: right;
+  background-color: var(--header-background-color);
+}
+
+.App {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+}
+
+/* Register */
+.RegisterField {
+  border: 2px solid var(--background-color);
+  border-top: 2px solid var(--primary);
+  text-align: center;
+  background-color: var(--background-color);
+  border-radius: 6px;
+}
+.RegisterLegend {
+  font-size: 32px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 6px;
+  background-color: var(--background-color);
+  min-width: 60px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.NicknameInput {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  font-size: 18px;
+  width: 100px;
+  height: 20px;
+  margin-top: 2px;
+  margin-left: 8px;
+  background-color: var(--background-color);
+  border: 2px solid var(--background-color);
+  border-bottom: 1px solid black;
+  display: inline-block;
+  text-align: left;
+}
+
+.IntroductionInput {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  font-size: 18px;
+  width: 1000px;
+  min-height: 200px;
+  margin-top: 10px;
+  background-color: var(--white);
+  border: 2px solid var(--white);
+  display: inline-block;
+  text-align: left;
+  border-radius: 6px;
+  
+}
+
+/* Personal Page*/
+
+
+.PersonalPageName {
+  text-align: center;
+  color: var(--pewter-blue);
+  font-weight: bold;
+  font-size: 60px;
+}
+
+.PersonalIntroduction {
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.PersnalProject {
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 8px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+/* View Project */
+
+
+.Project {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  width: 45vh;
+  min-height: 40vh;
+  margin: 10px 10px 10px 10px;
+  padding: 0px 0px 0px 0px;
+  border: 3px solid var(--brown);
+  background-color: var(--white);
+  display: inline-block;
+  border-radius: 8px;
+}
+
+#Progress {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background-color: #353333b0;
+  margin-bottom: 4px;
+}
+
+/* View one project*/
+
+.Project_List {
+  text-align: center;
+  display: inline-block;
+}
+
+.AllProjectHeader {
+  font-size: 28px;
+  margin-top: 0px;
+  margin-bottom: 4px;
+  color: var(--dark-grey);
+  text-align: center;
+}
+
+.AllProjectMoney {
+  font-size: 16px;
+  display: inline-block;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 3px;
+  margin-right: 90px;
+  color: var(--shallow-grey);
+}
+
+.AllProjectDayLeft {
+  font-size: 16px;
+  display: inline-block;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 90px;
+  margin-right: 3px;
+  color: var(--shallow-grey);
+}
+
+.ProjectHeader {
+  font-size: 40px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  color: var(--dark-grey);
+  text-align: center;
+}
+
+.Topic {
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 8px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.CreatorButton {
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--primary);
+  text-decoration: underline;
+  border: 1px solid var(--background-color);
+  background-color: var(--background-color);
+  cursor: pointer;
+  text-align: center;
+}
+
+.CurrentMoney {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 52px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+}
+
+.TargetMoney {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--shallow-grey);
+}
+
+.DayLeft {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  font-size: 52px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+}
+
+.Deadline {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--shallow-grey);
+}
+
+.SponsorButton {
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--background-color);
+  text-decoration: underline;
+  margin-top: 30px;
+  margin-bottom: 0px;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  border-radius: 4px;
+  margin-right: 32px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.IntroductionTopic {
+  font-size: 32px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 8px;
+  background-color: var(--primary);
+  min-width: 1200px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.Introduction {
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.Interactions {
+  font-size: 32px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 8px;
+  background-color: var(--primary);
+  min-width: 600px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.Vote {
+  font-size: 32px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 0px;
+  margin-bottom: 8px;
+  background-color: var(--primary);
+  min-width: 600px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.PrimaryHr {
+  width: 1200px;
   margin: 0px;
-  height: 4px;
-  border: 1px solid #40454e;
-  background-color: #ffffff0b;
+  border: 3px solid var(--primary);
 }
 
+/* CommentBoard */
+
+.CommentNumbers {
+  text-align: left;
+  font-size: 28px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+}
+
+.CommentBlock {
+  width: 600px;
+  height: 20px;
+  background-color: var(--background-color);
+}
+
+.CommentBlockInput {
+  width: 500px;
+  height: 20px;
+  margin-top: 2px;
+  margin-left: 0px;
+  background-color: var(--background-color);
+  border: 1px solid var(--background-color);
+  border-bottom: 1px solid black;
+  display: inline-block;
+  text-align: left;
+}
+
+.CommentBlockButton {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  color: var(--background-color);
+  text-decoration: underline;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: right;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.CreatorMessageBlock {
+  width: 600px;
+  height: 50px;
+  background-color: var(--very-shallow-grey);
+  text-align: center;
+}
+
+.MessageBlock {
+  width: 600px;
+  height: 50px;
+  background-color: var(--background-color);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.MessageName {
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+.MessageContent {
+  text-align: left;
+  font-size: 16px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 2px;
+  margin-left: 6px;
+}
+
+/* Vote */
+
+.NotStart {
+  text-align: center;
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--shallow-grey);
+  margin-top: 2px;
+  margin-left: 6px;
+}
+
+.BasicWord {
+  text-align: center;
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--dark-grey);
+  margin-top: 2px;
+  margin-left: 6px;
+}
+
+.VotingButton {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  color: var(--background-color);
+  text-decoration: underline;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: right;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+/* Others General Things*/
+
+.Block {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  display: inline-block;
+  vertical-align : top
+}
+
+.Center {
+  text-align: center;
+}
+
+.Left {
+  text-align: left;
+}
+
+.Button {
+  font-size: 18px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei;
+  color: var(--background-color);
+  text-decoration: underline;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/*hr {
+  width: 1200px;
+  margin: 0px;
+  border: 2px solid var(--primary);
+}*/

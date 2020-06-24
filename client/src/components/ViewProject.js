@@ -10,7 +10,7 @@ class ViewProject extends Component {
         this.handleCurrentProject = this.handleCurrentProject.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.state = {view_type: "all", current_project: 0, project_list: [], view_topic:'select'};
+        this.state = {view_type: "all", current_project: 0, project_list: [], view_topic:'select', nickname:'LOU2_is_a_shit_game', user_exist:false};
     }
 
     handleCurrentProject(event) {
@@ -46,20 +46,31 @@ class ViewProject extends Component {
             temp_list.push(project[0]);     //title
             temp_list.push(project[1]);     //intro
             temp_list.push(project[2]);     //topic
-            temp_list.push(project[3]);     //current money
-            temp_list.push(project[4]);     //accumulate money
-            temp_list.push(project[5]);     //target money
-            temp_list.push(project[6]);     //deadline
+            temp_list.push(project[3]);     //current money //accumulate money
+            temp_list.push(project[4]);     //target money
+            temp_list.push(project[5]);     //deadline
+            temp_list.push(project[6]);     //owner
             list.push(temp_list)
         }
         this.setState({project_list: list});
     }
 
-    /*
-    progressBar = (progress) => {
-
-    }*/
-
+    get_creator_data = async (address) => {
+		let user_exist = 2;
+		try {
+			user_exist = await this.props.data.contract.methods.view_user_exist_or_not(address).call();
+		} catch(error) {
+			alert('Error Message: ' + error);
+		}
+		if (user_exist == 1) {
+			const personal_data = await this.props.data.contract.methods.view_user_data(address).call();
+			this.setState({nickname: personal_data[0]});
+		}
+		else if (user_exist == 0){
+			this.setState({nickname: 'Anonymous user'});
+		}
+    }
+    
     render() {
         this.read_project();
         if (this.state.view_type === "all") {
@@ -77,32 +88,30 @@ class ViewProject extends Component {
             }
             const render_list = temp.map((project, index) => {
                 const oneDay = 24 * 60 * 60 * 1000
-                const deadline = new Date(project[6] * 1000)
+                const deadline = new Date(project[5] * 1000)
                 const today = Date.now()
-                const dayLeft = Math.round((deadline - today) / oneDay);
+                let dayLeft = Math.round((deadline - today) / oneDay);
+                if (dayLeft <= 0) dayLeft = 0;
                 return (
                     <div className="Project">
-                        <img src="https://i.imgur.com/4AiXzf8.jpg" style={{width: "45vh"}}></img>
-                        <h2 style={{marginTop:"5px", marginBottom:"10px"}}>{project[0]}</h2>
+                        <img name={String(index)} className="Button" onClick={this.handleCurrentProject} src="https://i.imgur.com/4AiXzf8.jpg" style={{width: "45vh"}}></img>
+                        <h2 class="AllProjectHeader">{project[0]}</h2>
                         <div id="Progress">
                             <div style={{
                                 position: "absolute",
-                                width: String(project[4]/project[5]*100)+"%",
+                                width: String(project[3]/project[4]*100)+"%",
                                 height: "100%",
-                                backgroundColor: "rgb(0, 228, 0)"
+                                backgroundColor: "#1FC173"
                                 }}></div>
                         </div>
-                        <p nowrap style={{textAlign: "left",
-                                        fontSize: "16px",
-                                        margin: "2px 10px 0px 10px"}}>{dayLeft} days left</p>
-                        <button name={String(index)} className="Button" onClick={this.handleCurrentProject}>View this project</button>
-                        
+                        <span class="AllProjectMoney">${project[3]/1000000000000000000} | {String(Math.round(project[3]/project[4]*100))+"%"}</span>
+                        <span class="AllProjectDayLeft">{dayLeft} days left</span>
                     </div>
                 )
             });
             return (
-                <div>
-                    <h1>Project list</h1>
+                <div class= "Center">
+                    <h1 class="h1">Project list</h1>
                     <DropDownMenu
                         value = {this.state.view_topic} 
                         handleChange = {this.handleChange}
@@ -123,41 +132,67 @@ class ViewProject extends Component {
             )
         }
         else {
-            const render_list = this.state.project_list.map(project => {
-                const deadline = new Date(project[6] * 1000)
-                return (
-                    <div className="Project">
-                        <img src="https://i.imgur.com/4AiXzf8.jpg" style={{width: "45vh"}}></img>
-                        <h2>{project[0]}</h2>
-                        <p>Introduction: {project[1]}</p>
-                        <p>Topic: {project[2]}</p>
-                        <p>Current money: {project[3]/1000000000000000000} Ether</p>
-                        <p>Accumulate money: {project[4]/1000000000000000000} Ether</p>
-                        <p>Target money: {project[5]/1000000000000000000} Ether</p>
-                        <p>Deadline: {deadline.toLocaleString()}</p>
-                        <button name="all" className="Button" onClick={this.handleCurrentProject}>Back to project list</button>
-                        <br></br>
-                        <button name="sponsor" className="Button" onClick={this.handleCurrentProject}>Sponsor this project</button>
-                        <div id="Progress">
-                            <div style={{
-                                position: "absolute",
-                                width: String(project[4]/project[5]*100)+"%",
-                                height: "100%",
-                                backgroundColor: "rgb(0, 228, 0)"
-                                }}></div>
+                if(this.state.nickname==="LOU2_is_a_shit_game")
+                {   
+                    this.get_creator_data(this.state.project_list[this.state.current_project][6])
+                }
+                const render_list = this.state.project_list.map(project => {
+                    const deadline = new Date(project[5] * 1000)
+                    const oneDay = 24 * 60 * 60 * 1000
+                    const today = Date.now()
+                    let dayLeft = Math.round((deadline - today) / oneDay);
+                    if (dayLeft <= 0) dayLeft = 0;
+                    //<p>Current money: {project[3]/1000000000000000000} Ether</p>
+                    return (
+                        <div class="Center">
+                            <h1 class="ProjectHeader">{project[0]}</h1>
+                            <span class="Topic">{project[2]}</span>
+                            <span> | Created by</span>
+                            <button name={project[6]} class="CreatorButton" onClick={this.props.handleWhosePage}>{this.state.nickname}</button>
+                            <p></p>
+                            <div class="Block">
+                                <img src="https://i.imgur.com/4AiXzf8.jpg" style={{width: "45vh"}}></img>
+                                <div id="Progress">
+                                    <div style={{
+                                        position: "absolute",
+                                        width: String(project[3]/project[4]*100)+"%",
+                                        height: "100%",
+                                        backgroundColor: "#1FC173"
+                                        }}></div>
+                                </div>
+                            </div>
+                            <div class="Block" style={{marginLeft: "10px"}}>
+                                <p class="CurrentMoney">${project[3]/1000000000000000000}</p>
+                                <p class="TargetMoney">Target ${project[4]/1000000000000000000}</p>
+                                <p class="DayLeft">{dayLeft} Days Left</p>
+                                <p class="Deadline">{deadline.toLocaleString()}</p>
+                                <button name="sponsor" className="SponsorButton" onClick={this.handleCurrentProject}>Sponsor this project</button>
+                                <button name="all" className="SponsorButton" onClick={this.handleCurrentProject}>Back to project list</button>
+                            </div>
+                            <div class="Project_List">
+                                <p class="IntroductionTopic">Project Introduction</p>
+                                <p class="Introduction">{project[1]}</p>
+                                <hr class="PrimaryHr"></hr>
+                            </div>
+                            
+                            
                         </div>
-                    </div>
-                )
-            })
+                    )
+                })
             const title = this.state.project_list[this.state.current_project][0]
-            const deadline = new Date(this.state.project_list[this.state.current_project][6] * 1000)
+            const deadline = new Date(this.state.project_list[this.state.current_project][5] * 1000)
             return (
                 <div>
-                    <h1>View project</h1>
-                    <div className="Project_List">
+                    <div className="Center">
                         {render_list[this.state.current_project]}
-                        <CommentBoard data={this.props.data} title={title}/>
-                        <Vote data={this.props.data} title={title} deadline={deadline}/>
+                        <span class="Block">
+                            <div class="Interactions">Interactions</div>
+                            <CommentBoard data={this.props.data} creator={this.state.project_list[this.state.current_project][6]} title={title} handleCurrentPage={this.props.handleCurrentPage}/>
+                        </span>
+                        <span class="Block">
+                            <div class="Vote">Vote</div>
+                            <Vote data={this.props.data} title={title} deadline={deadline}/>
+                        </span>
                     </div>
 
                 </div>

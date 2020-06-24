@@ -45,8 +45,8 @@ class DropDownMenu extends React.Component {
 function DropDownMenu(props){
 	return (
 		<form>
-			<label>
-				Fundraising topics:
+			<label class="BasicWords">
+				<div>Fundraising topics:</div>
 				<select value={props.value} onChange={props.handleChange}>
 					<option value="select">-select-</option>
 					<option value="charity">Charity</option>

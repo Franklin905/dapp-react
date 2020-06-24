@@ -3,11 +3,27 @@ import React from 'react'
 class Vote extends React.Component{
 	constructor(props) {
 		super(props);
-        this.state = {voting_end: false, voting_state: 0, agree: true, submit: false};
+        this.state = {success: false, wait_change: false, init: true, end: false, isvoting: false, voting_state: 0, agree: true, submit: false};
         this.handleClick = this.handleClick.bind(this);
+        this.readClick = this.readClick.bind(this);
+        this.agreeClick = this.agreeClick.bind(this);
+        this.disagreeClick = this.disagreeClick.bind(this);
     }
-    
-    handleClick(event) {
+    readClick(event){
+        this.read_state();
+        this.setState({wait_change: false});
+    }
+    agreeClick(){
+        this.vote_agree();
+        this.setState({wait_change: true});
+        //this.read_state();
+    }
+    disagreeClick(){
+        this.vote_disagree();
+        this.setState({wait_change: true});
+        //this.read_state();
+    }
+    handleClick(event){
         const {name} = event.target
         if (name == "Agree") {
             this.setState({agree: true})
@@ -15,10 +31,40 @@ class Vote extends React.Component{
         else if (name == "Disagree") {
             this.setState({agree: false})
         }
-        this.setState({submit: true})
+        
+        if (this.state.isvoting == false) {
+            this.start_voting()
+        }
+        else if (this.state.voting_state == 1) {
+            this.user_voting()
+        }
+        else if (this.state.voting_state == 2) {
+            this.stop_voting()
+        }
+        else if (this.state.voting_state == 3) {
+            this.stop_voting()
+        }
+        else if (this.state.isvoting == true) {
+            this.stop_voting()
+        }
+        else{
+            console.log("submit error");
+        }
+        this.setState({wait_change: true});
+        //this.read_state();
+        //console.log("Click end");
     }
     
-    read_voting_state = async () => {
+    read_state = async () => {
+        const { accounts, contract } = this.props.data;
+        let temp = await this.props.data.contract.methods.view_read_state(this.props.title).call();
+        this.setState({voting_state: temp[0]});
+        this.setState({end: temp[1]});
+        this.setState({isvoting: temp[2]});
+        this.setState({success: temp[3]});
+        //console.log("read end");
+    }
+    /*read_voting_state = async () => {
         const { accounts, contract } = this.props.data;
         let voting_state = await this.props.data.contract.methods.view_user_voting_state(accounts[0], this.props.title).call();
         //let voting_end = await this.props.data.contract.methods.view_project_voting_end(this.props.title).call();
@@ -26,11 +72,17 @@ class Vote extends React.Component{
         //this.setState({voting_end: voting_end});
     }
 
-    read_voting_end = async () => {
+    read_end = async () => {
         const { accounts, contract } = this.props.data;
-        let voting_end = await this.props.data.contract.methods.view_project_voting_end(this.props.title).call();
-        this.setState({voting_end: voting_end});
+        let end = await this.props.data.contract.methods.view_project_end(this.props.title).call();
+        this.setState({end: end});
     }
+
+    read_isvoting = async () => {
+        const { accounts, contract } = this.props.data;
+        let isvoting = await this.props.data.contract.methods.start_voting_or_not(this.props.title).call();
+        this.setState({isvoting: isvoting});
+    }*/
 
     start_voting = async () => {
         const { accounts, contract } = this.props.data;
@@ -65,12 +117,59 @@ class Vote extends React.Component{
 			gas:1000000,
 			data:"0000"},function(error,hash){if(error){console.log(error);}})
     }
+    vote_agree = async () => {
+        const { accounts, contract } = this.props.data;
+        await contract.methods.user_voting(
+            this.props.title,
+            true
+            ).send({
+            from: accounts[0] ,
+            value:0,
+            gas:1000000,
+            data:"0000"},function(error,hash){if(error){console.log(error);}})
+    }
+    vote_disagree = async () => {
+        const { accounts, contract } = this.props.data;
+        await contract.methods.user_voting(
+            this.props.title,
+            false
+            ).send({
+            from: accounts[0] ,
+            value:0,
+            gas:1000000,
+            data:"0000"},function(error,hash){if(error){console.log(error);}})
+    }
 
 
-
-	render(){
+	render() {
+        //console.log("render start");
+        //this.read_state();
+        /*
         this.read_voting_state();
-        // this.read_voting_end();
+        this.read_isvoting();
+        this.read_end();
+        */
+       /*
+        if(this.state.wait_change == true){
+            let temp1 = this.state.isvoting;
+            let temp2 = this.state.end;
+            let temp3 = this.state.voting_state;
+            this.read_state();
+            if(temp1 != this.state.isvoting || temp2 != this.state.end || temp3 != this.state.voting_state){
+                this.setState({wait_change: false});
+                console.log("read change");
+            }
+        }*/
+        if(this.state.init){
+            this.read_state();
+            this.setState({init: false});
+        }
+        if(this.state.wait_change){
+            //<div>load again</div>
+            return(
+                <button name="Reload" class="VotingButton" onClick={this.readClick}>load again</button>
+            )
+        }
         // alert(this.state.voting_state)
         /*return(
             <div>{this.state.voting_state}</div>
@@ -82,42 +181,38 @@ class Vote extends React.Component{
             )
         }*/
 
-        if (this.state.submit) {
-            if (this.state.voting_state == 0) {
-                this.start_voting()
-            }
-            else if (this.state.voting_state == 1) {
-                this.user_voting()
-            }
-            else if (this.state.voting_state == 2) {
-                this.stop_voting()
-            }
-            else if (this.state.voting_state == 3) {
-                this.stop_voting()
-            }
-            this.setState({submit: false});
+
+        if (this.state.end && this.state.success) {
+            return(
+                <p class="BasicWord"> This project succeeded.</p>
+            )
+        }   
+        else if (this.state.end && !this.state.success) {
+            return(
+                <p class="BasicWord"> This project failed.</p>
+            )
         }
-		if (this.state.voting_state == 0) {
+		else if (this.state.isvoting == false) {
             
             if (today > this.props.deadline )
                 return(
                     <div>
-                        <div>Be the first one to start the voting event!</div>
-                        <button name="Start" onClick={this.handleClick}>Start voting</button>
+                        <p class="BasicWord">Be the first one to start the voting event!</p>
+                        <button name="Start" class="VotingButton" onClick={this.handleClick}>Start voting</button>
                     </div>
                 )
             else{
                 return(
-                    <div></div>
+                    <p class="NotStart">Voting event hasn't start yet.</p>
                 )
             }
         }
         else if (this.state.voting_state == 1) {
             return(
                 <div>
-                    <div>Agree to let the project continue.</div>
-                    <button name="Agree" onClick={this.handleClick}>Agree</button>
-                    <button name="Disagree" onClick={this.handleClick}>Disagree</button>
+                    <p class="BasicWord">Agree to let the project continue.</p>
+                    <button class="VotingButton" name="Agree" onClick={this.agreeClick}>Agree</button>
+                    <button class="VotingButton" name="Disagree" onClick={this.disagreeClick}>Disagree</button>
                 </div>
             )
         }
@@ -125,14 +220,14 @@ class Vote extends React.Component{
             if (today > this.props.deadline)
                 return(
                     <div>
-                        <div> You voted agree.</div>
-                        <div>Be the first one to stop the voting event!</div>
-                        <button name="Stop" onClick={this.handleClick}>Stop voting</button>
+                        <p class="BasicWord"> You voted agree.</p>
+                        <p class="BasicWord">Be the first one to stop the voting event!</p>
+                        <button class="VotingButton" name="Stop" onClick={this.handleClick}>Stop voting</button>
                     </div>
                 )
             else{
                 return(
-                    <div> You voted agree.</div>
+                    <p class="BasicWord"> You voted agree.</p>
                 )
             }
         }
@@ -140,28 +235,31 @@ class Vote extends React.Component{
             if (today > this.props.deadline)
                 return(
                     <div>
-                        <div> You voted disagree.</div>
-                        <div>Be the first one to stop the voting event!</div>
-                        <button name="Stop" onClick={this.handleClick}>Stop voting</button>
+                        <p class="BasicWord"> You voted disagree.</p>
+                        <p class="BasicWord">Be the first one to stop the voting event!</p>
+                        <button class="VotingButton" name="Stop" onClick={this.handleClick}>Stop voting</button>
                     </div>
                 )
             else{
                 return(
-                    <div> You voted disagree.</div>
+                    <p class="BasicWord"> You voted disagree.</p>
                 )
             }
         }
-        else if (this.state.voting_state == 4) {
-            return(
-                <div> This project succeeded.</div>
-                    
-            )
-        }   
-        else if (this.state.voting_state == 5) {
-            return(
-                <div> This project failed.</div>
-                    
-            )
+        else if (this.state.isvoting == true) {
+            
+            if (today > this.props.deadline )
+                return(
+                    <div>
+                        <p class="BasicWord">Be the first one to stop the voting event!</p>
+                        <button class="VotingButton" name="Stop" onClick={this.handleClick}>Stop voting</button>
+                    </div>
+                )
+            else{
+                return(
+                    <p class="BasicWord">Error! {this.state.voting_state}</p>
+                )
+            }
         }   
         else {
             return(

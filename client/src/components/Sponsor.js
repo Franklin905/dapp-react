@@ -28,7 +28,7 @@ class Sponsor extends Component {
                 this.setState({hasSponsor: true})
             }
             return (
-                <div>
+                <div class="Center">
                     <h1>Adding Transaction</h1>
                     <br></br>
                     <button className="Button" name={this.props.current_project} onClick={this.props.handleCurrentProject}>Back to project</button>
@@ -36,11 +36,11 @@ class Sponsor extends Component {
             )
         }
         return (
-            <div>
-                <h1>Sponsor</h1>
+            <div class="Center">
+                <h1 class="h1">Sponsor</h1>
                 <button name={this.props.current_project} className="Button" onClick={this.props.handleCurrentProject}>Back to project</button>
                 <form name="view project" onSubmit={this.handleSubmit}>
-                    <h2>Sponsor Money Amount</h2>
+                    <h2 class="BasicWord">Sponsor Money Amount</h2>
                     <input
                         name="money"
                         value={this.state.money}

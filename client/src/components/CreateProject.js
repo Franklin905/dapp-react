@@ -4,68 +4,31 @@ class CreateProject extends Component {
 	//state = {title: '', intro: '', topic: '', tar_money: "1", deadline: '', submit: false, hasCreate: false}
 	constructor(props) {
 		super(props);
-		this.state = {title: '', topic: '', intro: '', tar_money: "1", deadline: '', submit: false, hasCreate: false, 'title_exist': false}
+		this.state = {title: '', topic: '', intro: '', tar_money: "1", deadline: '',stagenum: 1 ,submit: false, hasCreate: false}
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);		// 2020/06/18
+		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleTopic = this.handleTopic.bind(this);
 	}
 
+	handleSubmit() {
+		this.setState({submit: true})
+	}
+
 	handleChange(event) {
-		const {name, value} = event.target;
-		this.setState({[name]: value});
+		const {name, value} = event.target
+		this.setState({[name]: value})
 	}
 
 	handleTopic(event) {
 		this.setState({topic: event.target.value});
 	}
 
-	// 2020/06/18
-	handleSubmit() {
-		/*await this.check_title();
-		if(this.state.title_exist) {
-			console.log(this.state.title_exist);
-			console.log('title already exists!');
-		}
-		else{
-			console.log(this.state.title_exist);
-			console.log('title pass');
-			this.setState({submit: true});
-		}*/
-		this.setState({submit: true});
-	}
-
-	// 2020/06/18
-	check_title = async () => {
-		const title_check = await this.props.data.contract.methods.check_title(this.state.title).call();
-		//await this.setState({title_exist: title_check});
-		console.log('title_check = ' + title_check);
-		console.log('title_check type = ' + typeof(title_check))
-		
-		if (title_check) {
-			alert('title already exists!');
-			await this.setState({submit: false});
-		}
-		else {
-			console.log('title_check should be false, title_check = ' + title_check);
-			const hasCreate = this.state.hasCreate;
-			/*if (!hasCreate) {
-				try{
-					await this.add_project();
-				} catch(error) {
-					alert('Error occurs : The project name has been used.');
-				}
-				//await this.add_project();
-				this.setState({hasCreate: true});
-			}*/
+	Catch_error = async () => {
+		try{
 			await this.add_project();
-			return (
-				<div>
-					<h1>Adding Transaction</h1>
-					<br></br>
-					<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
-				</div>
-			)
+		} catch(error) {
+			alert('Error occurs : The project name has been used.');
 		}
 	}
 
@@ -77,6 +40,7 @@ class CreateProject extends Component {
 			this.state.intro,
 			this.props.data.web3.utils.toWei(this.state.tar_money,"ether"),
 			Date.parse(this.state.deadline) / 1000,
+			this.state.stagenum,
 			).send({
 			from: accounts[0],
 			value:0,
@@ -85,34 +49,26 @@ class CreateProject extends Component {
 	 }
 
 	render() {
-		console.log('this.state.submit = ' + this.state.submit);
-		let submit = this.state.submit;
-		if (submit) {
-			return(this.check_title())
-			/*if (this.state.title_exist) {
-				alert('title already exists!');
-				this.setState({submit: false});
+		if (this.state.submit) {
+			if (!this.state.hasCreate) {
+				this.Catch_error();
+				console.log('In render, here.');
+				//this.add_project();
+				this.setState({hasCreate: true});
 			}
-			else {
-				console.log('this.state.title_exist = ' + this.state.title_exist);
-				if (!this.state.hasCreate) {
-					this.add_project();
-					this.setState({hasCreate: true});
-				}
-				return (
-					<div>
-						<h1>Adding Transaction</h1>
-						<br></br>
-						<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
-					</div>
-				)
-			}*/
+			return (
+				<div class="Center">
+					<h1>Adding Transaction</h1>
+					<br></br>
+					<button className="Button" name="view project" onClick={this.props.handleCurrentPage}>View project</button>
+				</div>
+			)
 		}
 		return (
-			<div>
-				<h1>Create project</h1>
+			<div class="Center">
+				<h1 class="h1">Create project</h1>
 				<form name="view project" onSubmit={this.handleSubmit}>
-					<h3 style={{marginBottom: "5px"}}>Project Title</h3>
+					<h3 class="h2">Project Title</h3>
 					<input
 						name="title"
 						value={this.state.title}
@@ -123,7 +79,7 @@ class CreateProject extends Component {
 							fontFamily: "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, Microsoft JhengHei"}}>
 					</input>
 					<br></br>
-					<h3 style={{marginBottom: "5px"}}>Project Topic</h3>
+					<h3 class="h2">Project Topic</h3>
 					<label>
 						<select name='topic' value={this.state.topic} onChange={this.handleChange}>
 							<option value="select">-select-</option>
@@ -136,7 +92,7 @@ class CreateProject extends Component {
 						</select>
 					</label>
 					<br></br>
-					<h3 style={{marginBottom: "5px"}}>Project Introduction</h3>
+					<h3 class="h2">Project Introduction</h3>
 					<textarea
 						name="intro"
 						value={this.state.intro}
@@ -148,7 +104,7 @@ class CreateProject extends Component {
 							fontSize: "16px"}}>
 					</textarea>
 					<br></br>
-					<h3 style={{marginBottom: "5px"}}>Target Money</h3>
+					<h3 class="h2">Target Money</h3>
 					<input
 						name="tar_money"
 						value={this.state.tar_money}
@@ -158,7 +114,18 @@ class CreateProject extends Component {
 						onChange={this.handleChange}>
 					</input>
 					<br></br>
-					<h3 style={{marginBottom: "5px"}}>Deadline</h3>
+					<h3 class="h2">Stage Number</h3>
+					<input
+						name="stagenum"
+						value={this.state.stagenum}
+						type="number"
+						placeholder="Stage Number"
+						min="1"
+						onChange={this.handleChange}>
+					</input>
+					<br></br>
+					<h3 class="h2">Deadline</h3>
+					<br></br>
 					<input
 						name="deadline"
 						value={this.state.deadline}
